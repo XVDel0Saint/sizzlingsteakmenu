@@ -17,7 +17,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            scroll-behavior: smooth; /* Smooth scrolling */
+            scroll-behavior: smooth;
         }
         .container {
             width: 90%;
@@ -25,11 +25,16 @@
             margin: 0 auto;
             padding: 0 20px;
         }
+        /* Header styles */
         header {
+            background-color: #000000;
+            padding: 1rem 0;
+            position: relative;
+        }
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
         }
         .logo {
             font-size: 24px;
@@ -41,6 +46,8 @@
         nav ul {
             display: flex;
             list-style: none;
+            padding: 0;
+            margin: 0;
         }
         nav ul li {
             margin-left: 20px;
@@ -52,6 +59,72 @@
         }
         nav ul li a:hover {
             color: #ff6b6b;
+        }
+        /* Navigation styles */
+        .nav-menu {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-menu li {
+            margin-left: 1.5rem;
+        }
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .nav-menu a:hover {
+            color: #f44336;
+        }
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        /* Pop-up menu styles */
+        .popup-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .popup-menu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .popup-menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .popup-menu li {
+            margin: 0.5rem 0;
+        }
+        .popup-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        .popup-menu a:hover {
+            color: #f44336;
         }
         .active {
             border-bottom: 2px solid #ff6b6b;
@@ -107,50 +180,55 @@
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
-        /* About Us Section Styling */
-        #about {
-            background-color: #1f2024;
-            padding: 60px 20px;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 50px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            margin-top: 10%;
-        }
-        #about h2 {
-            font-size: 36px;
-            color: #f44336;
-            margin-bottom: 20px;
-        }
-        #about p {
-            font-size: 18px;
-            color: #ddd;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
-        /* Contact Section Styling */
-        #contact {
-            background-color: #1f2024;
-            padding: 60px 20px;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            margin-top: 10%;
-            margin-bottom: 10%;
-        }
-        #contact h2 {
-            font-size: 36px;
-            color: #f44336;
-            margin-bottom: 20px;
-        }
-        #contact p {
-            font-size: 18px;
-            color: #ddd;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
+        #about, #contact {
+    display: flex; /* Flexbox ensures proper alignment */
+    flex-direction: column; /* Arrange children vertically */
+    align-items: center; /* Center-align child elements horizontally */
+    background-color: #1f2024;
+    padding: 60px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+#about h2, #contact h2 {
+    font-size: 36px;
+    color: #f44336;
+    margin-bottom: 1rem;
+    text-align: center; /* Ensures text inside the h2 is centered */
+    width: 100%; /* Optional: makes sure h2 spans the full width of the container */
+}
+
+#about p, #contact p {
+    font-size: 16px;
+    color: #ddd;
+    max-width: 85%;
+    margin: 0 auto;
+    line-height: 1.6;
+    text-align: justify; /* Justifies body text */
+}
+
+@media (max-width: 768px) {
+    #about h2, #contact h2 {
+        font-size: 28px;
+    }
+    #about p, #contact p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    #about h2, #contact h2 {
+        font-size: 24px;
+    }
+    #about p, #contact p {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+}
+
         main {
             flex: 1 0 auto;
         }
@@ -162,7 +240,7 @@
             width: 100%;
         }
         @media (max-width: 768px) {
-            .hero {
+            .hero, .hero-content, .hero-image {
                 flex-direction: column;
                 text-align: center;
             }
@@ -170,8 +248,60 @@
                 padding-right: 0;
                 margin-bottom: 30px;
             }
+            nav {
+                width: 100%;
+                margin-top: 20px;
+            }
             nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 10px 0;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            #about h2, #contact h2 {
+                font-size: 28px;
+            }
+            #about p, #contact p {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            #about, #contact {
+                padding: 40px 15px;
+            }
+            .nav-menu {
                 display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #1a1a1a;
+                padding: 1rem 0;
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+            .nav-menu li {
+                margin: 0.5rem 0;
+                text-align: center;
+            }
+            .hamburger {
+                display: block;
+            }
+        }
+        @media (max-width: 480px) {
+            #about h2, #contact h2 {
+                font-size: 24px;
+            }
+            #about p, #contact p {
+                font-size: 13px;
             }
         }
     </style>
@@ -180,13 +310,14 @@
     <header>
         <div class="container">
             <div class="logo">Sizzling<span>Steak</span></div>
-            <nav>
-                <ul>
+            <nav class="navbar">
+                <ul class="nav-menu">
                     <li><a href="#" class="active">Home</a></li>
                     <li><a href="main.html">Menu</a></li>
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
+                <button class="hamburger" aria-label="Toggle menu">☰</button>
             </nav>
         </div>
     </header>
@@ -204,7 +335,6 @@
                 </div>
             </section>
 
-            <!-- About Us Section -->
             <section id="about">
                 <h2>About Us</h2>
                 <p>
@@ -213,18 +343,17 @@
                     grilled to bring out the best flavors. Our chefs are artisans, committed to crafting each 
                     steak with precision and care. At Sizzling Steak, we believe that dining is not just about 
                     food, but about creating memorable experiences. Our cozy, inviting atmosphere is designed to 
-                    make every visit special, whether you’re celebrating a milestone or simply enjoying a night 
+                    make every visit special, whether you're celebrating a milestone or simply enjoying a night 
                     out. We value our customers and strive to exceed their expectations with every meal. Join us 
                     and discover why Sizzling Steak is the ultimate destination for steak enthusiasts.
                 </p>
             </section>
 
-            <!-- Contact Section -->
             <section id="contact">
                 <h2>Contact Us</h2>
                 <p>
                     Have questions or want to make a reservation? Contact us!
-                    <br>Email: contact@sizzlingsteak.com
+                    <br>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c0a3afaeb4a1a3b480b3a9babaaca9aea7b3b4a5a1abeea3afad">contact@sizzlingsteak.com</a>
                     <br>Location: Level 1 Expansion Mall - Robinsons Place Tacloban, Brgy, 77 Tabuan National Hwy, Marasbaras, Tacloban City, Leyte
                 </p>
             </section>
@@ -237,7 +366,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
             const hero = document.querySelector('.hero');
             setTimeout(() => {
@@ -260,5 +389,60 @@
             });
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', 
+                hamburger.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'
+            );
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInside = navMenu.contains(event.target) || hamburger.contains(event.target);
+            if (!isClickInside && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Handle resize events
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Fade-in animation
+        const fadeElems = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        fadeElems.forEach(elem => observer.observe(elem));
+    });
+    </script>
 </body>
 </html>
+
