@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizzling Steak - Delicious Steaks</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: white;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            scroll-behavior: smooth; /* Smooth scrolling */
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .logo span {
+            color: #f44336;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #ff6b6b;
+        }
+        .active {
+            border-bottom: 2px solid #ff6b6b;
+        }
+        .hero, section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .hero h1 span {
+            color: #f44336;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #f44336;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #d32f2f;
+        }
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        /* About Us Section Styling */
+        #about {
+            background-color: #1f2024;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 10%;
+        }
+        #about h2 {
+            font-size: 36px;
+            color: #f44336;
+            margin-bottom: 20px;
+        }
+        #about p {
+            font-size: 18px;
+            color: #ddd;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        /* Contact Section Styling */
+        #contact {
+            background-color: #1f2024;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-top: 10%;
+            margin-bottom: 10%;
+        }
+        #contact h2 {
+            font-size: 36px;
+            color: #f44336;
+            margin-bottom: 20px;
+        }
+        #contact p {
+            font-size: 18px;
+            color: #ddd;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        footer {
+            background-color: #1f2024;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Sizzling<span>Steak</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="main.html">Menu</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Special <span>DELICIOUS</span> Steaks</h1>
+                    <p>Experience the finest cuts of meat, grilled to perfection and served sizzling hot. Our steaks are a culinary delight that will satisfy your cravings.</p>
+                    <a href="main.html" class="cta-button">ORDER NOW</a>
+                </div>
+                <div class="hero-image">
+                    <img src="media/logo.jpeg" alt="Sizzling Steak">
+                </div>
+            </section>
+
+            <!-- About Us Section -->
+            <section id="about">
+                <h2>About Us</h2>
+                <p>
+                    Welcome to Sizzling Steak, where passion for perfection meets culinary excellence. 
+                    We have been dedicated to serving steak lovers with the finest cuts of meat, meticulously 
+                    grilled to bring out the best flavors. Our chefs are artisans, committed to crafting each 
+                    steak with precision and care. At Sizzling Steak, we believe that dining is not just about 
+                    food, but about creating memorable experiences. Our cozy, inviting atmosphere is designed to 
+                    make every visit special, whether you’re celebrating a milestone or simply enjoying a night 
+                    out. We value our customers and strive to exceed their expectations with every meal. Join us 
+                    and discover why Sizzling Steak is the ultimate destination for steak enthusiasts.
+                </p>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact">
+                <h2>Contact Us</h2>
+                <p>
+                    Have questions or want to make a reservation? Contact us!
+                    <br>Email: contact@sizzlingsteak.com
+                    <br>Location: Level 1 Expansion Mall - Robinsons Place Tacloban, Brgy, 77 Tabuan National Hwy, Marasbaras, Tacloban City, Leyte
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Sizzling Steak. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hero = document.querySelector('.hero');
+            setTimeout(() => {
+                hero.classList.add('visible');
+            }, 100);
+
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizzling Steak Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #15181c;
+            color: white;
+        }
+        .tabs a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .tab.active a {
+            color: white;
+            text-decoration: none;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            background-color: #1a1e23;
+            z-index: 1000;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .cart-button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tabs-container {
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+            background-color: #1a1e23;
+        }
+        .tabs {
+            display: flex;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 20px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #f5f5f5;
+            color: #333;
+            cursor: pointer;
+            border: none; /* Remove default button borders */
+        }
+        .tab button {
+            width: 100%;
+            background: none;
+            border: none;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .tab.active {
+            background-color: #8b1e1e;
+            color: white;
+        }
+        .overlay {
+            height: 20px;
+            background: linear-gradient(to bottom, #1a1e23, transparent);
+            margin-top: -1px;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .menu-item {
+            background-color: #2c3238;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .menu-item.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .menu-item:hover {
+            animation: wiggle 0.5s ease-in-out;
+        }
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+        .item-details {
+            padding: 15px;
+        }
+        .item-name {
+            margin: 0 0 10px 0;
+        }
+        .item-price {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        .item-rating {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        .order-button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .order-button:hover {
+            background-color: #b71c1c;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #2c3238;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-image {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .modal-description {
+            margin-bottom: 15px;
+        }
+        .modal-comments {
+            margin-top: 20px;
+        }
+        .comment {
+            background-color: #1a1e23;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .cart-items {
+            margin-top: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #1a1e23;
+            border-radius: 5px;
+        }
+        .cart-total {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: right;
+        }
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form textarea {
+            width: 99%;
+            padding-bottom: 50px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #1a1e23;
+            color: white;
+            border: 1px solid #444;
+        }
+        .comment-form button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+        .checkout-button, .clear-cart-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .clear-cart-button {
+            background-color: #f44336;
+            margin-top: 5px;
+        }
+        .clear-cart-button {
+            background-color: #f44336;
+            margin-top: 5px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .logo span {
+            color: #f44336;
+        }
+        .logo-image {
+            width: 40px; /* Adjust size as needed */
+            height: 40px; /* Ensures a circular shape */
+            border-radius: 50%; /* Makes the image circular */
+            object-fit: cover; /* Scales the image to fit within the round shape */
+            margin-right: 10px; /* Space between logo and text */
+        }
+        #checkoutButton:disabled {
+            cursor: not-allowed;
+            opacity: 0.5; /* Optional: Makes the button look dimmed when disabled */
+        }
+        /* qr code container */
+        #qrCodeModal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        #qrCodeContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .finish-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .simulate-scan-button {
+            background-color: #FFD700;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><a href="landing.html" style="color: #fff; text-decoration: none;">
+            <img src="media/logo.jpeg" alt="Sizzling Steak Logo" class="logo-image">
+            Sizzling<span>Steak</a></span>
+        </div>
+        <h1>Menu</h1>
+        <button class="cart-button" id="cartButton" aria-label="View Cart">🛒 Cart (0)</button>
+    </div>
+    
+    <div class="tabs-container">
+        <div class="tabs">
+            <div class="tab"><button data-url="main.html">Steaks</button></div>
+            <div class="tab"><button data-url="sides.html">Sides</button></div>
+            <div class="tab"><button data-url="drinks.html">Drinks</button></div>
+            <div class="tab"><button data-url="combo.html">Bundle Meals</button></div>
+            <div class="tab active"><button data-url="#">Add-ons</button></div>
+        </div>
+        <div class="overlay"></div>
+    </div>
+    
+    <div class="menu-grid">
+        <div class="menu-item">
+            <img src="media/gravy.jpg" alt="Sizzling Gravy">
+            <div class="item-details">
+                <h2 class="item-name">Sizzling Gravy</h2>
+                <p class="item-price">₱25.00</p>
+                <div class="item-rating">★★★★☆ <div style="color: #fff;">4.0</div></div>
+                <button class="order-button" data-name="Sizzling Gravy" data-price="25.00">Order Now</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="media/sweet-n-sour.jpg" alt="Sweet 'n Sour Dip">
+            <div class="item-details">
+                <h2 class="item-name">Sweet 'n Sour Dip</h2>
+                <p class="item-price">₱25.00</p>
+                <div class="item-rating">★★★★★ <div style="color: #fff;">5.0</div></div>
+                <button class="order-button" data-name="Sweet 'n Sour Dip" data-price="25.00">Order Now</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="media/veggie.jpg" alt="Veggies and Corn">
+            <div class="item-details">
+                <h2 class="item-name">Veggies and Corn</h2>
+                <p class="item-price">₱25.00</p>
+                <div class="item-rating">★★★★☆ <div style="color: #fff;">4.0</div></div>
+                <button class="order-button" data-name="Veggies and Corn" data-price="25.00">Order Now</button>
+            </div>
+        </div>
+        <div class="menu-item">
+            <img src="media/kimchi.jpg" alt="Kimchi">
+            <div class="item-details">
+                <h2 class="item-name">Kimchi</h2>
+                <p class="item-price">₱30.00</p>
+                <div class="item-rating">★★★★★ <div style="color: #fff;">5.0</div></div>
+                <button class="order-button" data-name="Kimchi" data-price="30.00">Order Now</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close" aria-label="Close">&times;</span>
+            <img class="modal-image" src="" alt="Steak">
+            <h2 id="modalItemName"></h2>
+            <p id="modalItemPrice"></p>
+            <div id="modalItemRating"></div>
+            <p class="modal-description" id="modalItemDescription"></p>
+            <button class="order-button" id="modalOrderButton">Order Now</button>
+            <div class="modal-comments" id="modalComments"></div>
+            <form class="comment-form" id="commentForm">
+                <textarea placeholder="Leave a comment..." required aria-label="Comment"></textarea>
+                <button type="submit">Submit Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" aria-label="Close">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cartItems" class="cart-items"></div>
+            <div id="cartTotal" class="cart-total"></div>
+            <button id="checkoutButton" class="checkout-button">Checkout</button>
+            <button id="clearCartButton" class="clear-cart-button">Clear Cart</button>
+        </div>
+    </div>
+
+    <div id="qrCodeModal" class="modal">
+        <div class="modal-content">
+            <h2>Order QR Code</h2>
+            <div id="qrCodeContainer"></div>
+            <button id="finishButton" class="finish-button">Finish</button>
+            <button id="simulateScanButton" class="simulate-scan-button">Serialize QR Code Scan</button>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Menu items data
+        const menuItems = [
+            {
+                src:"media/gravy.jpg",
+                name: "Sizzling Gravy",
+                price: 25.00,
+                rating: 4.0,
+                description: "Our rich, savory gravy served sizzling hot adds an extra layer of flavor to any dish. Perfectly seasoned and irresistibly smooth, it’s the ultimate sauce for your favorite sizzling plates.",
+                comments: [
+                    { user: "John D.", text: "This sizzling gravy takes everything up a notch! So flavorful and pairs perfectly with any dish." },
+                    { user: "Sarah M.", text: "The sizzle adds so much depth to the gravy’s flavor. I could pour this over anything!" }
+                ]
+            },
+            {
+                src:"media/sweet-n-sour.jpg",
+                name: "Sweet 'n Sour Dip",
+                price: 25.00,
+                rating: 5.0,
+                description: "Balance your bites with the perfect harmony of sweet and tangy! Our sweet 'n sour dip is made with fresh ingredients, offering a delightful punch of flavor to elevate any meal or snack.",
+                comments: [
+                    { user: "Mike R.", text: "Love this sweet and sour dip! It has the perfect balance of flavors, and it’s great with everything." },
+                    { user: "Emily L.", text: "The sweetness and tanginess are spot on! I dip everything in this sauce, it’s that good." }
+                ]
+            },
+            {
+                src:"media/veggie.jpg",
+                name: "Veggies and Corn",
+                price: 25.00,
+                rating: 4.0,
+                description: "Fresh, vibrant veggies and sweet corn lightly seasoned to perfection! A nutritious, colorful side dish that complements any sizzling main, bringing a healthy balance to your meal.",
+                comments: [
+                    { user: "David W.", text: "The veggies and corn are perfectly cooked and so fresh! A great side to balance out the richness of the mains." },
+                    { user: "Lisa K.", text: "I love how crisp the veggies are and the corn is so sweet. Adds the perfect healthy touch to the meal." }
+                ]
+            },
+            {
+                src:"media/kimchi.jpg",
+                name: "Kimchi",
+                price: 30.00,
+                rating: 5.0,
+                description: "Spicy, tangy, and full of bold flavors, our kimchi is a traditional Korean side dish made with fermented vegetables. It’s the perfect addition to any meal, adding a punch of flavor with every bite.",
+                comments: [
+                    { user: "Chris B.", text: "This kimchi is packed with flavor and just the right amount of spice! A must-have side dish." },
+                    { user: "Amanda S.", text: "I’m obsessed with this kimchi! The tangy, spicy kick is perfect with sizzling dishes." }
+                ]
+            }
+        ];
+
+        const qrCodeModal = document.getElementById('qrCodeModal');
+
+        // Function to generate QR code
+        function generateQRCode(data) {
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            qrCodeContainer.innerHTML = ''; // Clear previous QR code
+            new QRCode(qrCodeContainer, {
+                text: data,
+                width: 250,
+                height: 250
+            });
+        }
+
+        // Add to order functionality
+        const cartButton = document.getElementById('cartButton');
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+        function updateCartButton() {
+            const totalItems = cartItems.length;
+            const totalPrice = cartItems.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+            cartButton.textContent = `🛒 Cart (${totalItems}) - ₱${totalPrice}`;
+
+            // Disable the button if cartItems is empty
+            if (cartItems.length === 0) {
+                checkoutButton.disabled = true;
+            } else {
+                checkoutButton.disabled = false;
+            }
+        }
+        updateCartButton();
+
+        function addToOrder(name, price) {
+            cartItems.push({ name, price });
+            updateCartButton();
+            saveCartItems(); // Ensure the initial cart items are saved if any changes occur
+            showNotification(`${name} has been added to your cart!`);
+        }
+
+        // Function to save cart items to local storage
+        function saveCartItems() {
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        document.querySelectorAll('.order-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const name = button.getAttribute('data-name');
+                const price = button.getAttribute('data-price');
+                addToOrder(name, price);
+            });
+        });
+
+        // Fade-in and scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                } else {
+                    entry.target.classList.remove('fade-in');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // Modal functionality
+        const itemModal = document.getElementById('itemModal');
+        const cartModal = document.getElementById('cartModal');
+        const modalImage = document.querySelector('.modal-image');
+        const modalItemName = document.getElementById('modalItemName');
+        const modalItemPrice = document.getElementById('modalItemPrice');
+        const modalItemRating = document.getElementById('modalItemRating');
+        const modalItemDescription = document.getElementById('modalItemDescription');
+        const modalOrderButton = document.getElementById('modalOrderButton');
+        const modalComments = document.getElementById('modalComments');
+        const commentForm = document.getElementById('commentForm');
+
+        function openItemModal(item) {
+            modalImage.src = item.src;
+            modalImage.alt = item.name;
+            modalItemName.textContent = item.name;
+            modalItemPrice.textContent =   `₱${item.price.toFixed(2)}`;
+            modalItemRating.textContent = `★`.repeat(Math.floor(item.rating)) + `☆`.repeat(5 - Math.floor(item.rating)) + ` ${item.rating}`;
+            modalItemDescription.textContent = item.description;
+            modalOrderButton.setAttribute('data-name', item.name);
+            modalOrderButton.setAttribute('data-price', item.price);
+
+            modalComments.innerHTML = '';
+            item.comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment');
+                commentElement.innerHTML = `<strong>${comment.user}</strong>: ${comment.text}`;
+                modalComments.appendChild(commentElement);
+            });
+
+            itemModal.style.display = 'block';
+        }
+
+        document.querySelectorAll('.menu-item img').forEach((img, index) => {
+            img.addEventListener('click', () => openItemModal(menuItems[index]));
+        });
+
+        //redirectory
+        document.querySelectorAll('.tab button').forEach(button => {
+        button.addEventListener('click', () => {
+            const url = button.getAttribute('data-url');
+            if (url) window.location.href = url;
+        });
+    });
+
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const commentText = commentForm.querySelector('textarea').value;
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `<strong>Anonymous</strong>: ${commentText}`;
+            modalComments.appendChild(newComment);
+            commentForm.reset();
+        });
+
+        function openCartModal() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cartItems.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                
+                cartItem.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>₱${parseFloat(item.price).toFixed(2)}</span>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+                total += parseFloat(item.price);
+            });
+
+            cartTotal.textContent = `Total: ₱${total.toFixed(2)}`;
+            cartModal.style.display = 'block';
+        }
+
+        cartButton.addEventListener('click', openCartModal);
+
+        // Event listener for the checkout button
+        document.getElementById('checkoutButton').addEventListener('click', () => {
+            if (cartItems.length > 0) { // Check if there are items in the cart
+                const orderData = JSON.stringify(cartItems);
+                generateQRCode(orderData);
+                cartModal.style.display = 'none'; // Close cart modal
+                qrCodeModal.style.display = 'block'; // Open QR code modal
+                alert('Thank you for your order! Your QR code is now displayed.');
+                saveCartItems(); // Save the updated empty cart to local storage
+                updateCartButton(); // Update button state after emptying cart
+            }
+        });
+
+        // Add a new function to handle QR code scanning (simulated here)
+        function scanQRCode() {
+            const scannedData = JSON.parse(JSON.stringify(cartItems));
+            alert('Scanned Order: ' + JSON.stringify(scannedData, null, 2));
+        }
+
+        // // Add event listener for the finish button
+        document.getElementById('simulateScanButton').addEventListener('click', scanQRCode);
+
+        // Add event listener for the finish button
+        document.getElementById('finishButton').addEventListener('click', () => {
+            qrCodeModal.style.display = 'none'; // Close QR code modal
+            cartItems = []; // Empty the cart
+            saveCartItems(); // Save the updated empty cart to local storage
+            updateCartButton(); // Update button state after emptying cart
+        });
+
+        // Function to handle QR code scanning (simulated)
+        function scanQRCode() {
+            const scannedData = JSON.parse(JSON.stringify(cartItems));
+            alert('Scanned Order: ' + JSON.stringify(scannedData, null, 2));
+        }
+
+        // Update close modal functionality to include QR code modal
+        window.addEventListener('click', (event) => {
+            if (event.target === itemModal || event.target === cartModal || event.target === qrCodeModal) {
+                itemModal.style.display = 'none';
+                cartModal.style.display = 'none';
+                qrCodeModal.style.display = 'none';
+            }
+        });
+
+        document.getElementById('clearCartButton').addEventListener('click', () => {
+            cartItems = [];
+            updateCartButton();
+            openCartModal();
+        });
+
+        // Close modal functionality
+        document.querySelectorAll('.close').forEach(closeButton => {
+            closeButton.addEventListener('click', () => {
+                itemModal.style.display = 'none';
+                cartModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === itemModal || event.target === cartModal) {
+                itemModal.style.display = 'none';
+                cartModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
